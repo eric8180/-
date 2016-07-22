@@ -1,0 +1,56 @@
+﻿@model IEnumerable<MVCDemo.Models.Client>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<p>
+    @Html.ActionLink("Upload files","Upload")
+</p>
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.client_name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.phone_number)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.join_time)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.client_manager)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.client_name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.phone_number)
+        </td>
+        @*
+        <td>
+            @Html.DisplayFor(modelItem => item.join_time)
+        </td>
+        *@
+        <td>
+            @Html.DisplayFor(modelItem => item.client_manager)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.identify_number }) |
+            @Html.ActionLink("Details", "Details", new { id=item.identify_number }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.identify_number })
+        </td>
+    </tr>
+}
+
+</table>

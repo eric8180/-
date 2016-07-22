@@ -1,0 +1,43 @@
+﻿@model MVCDemo.Models.Client
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Client</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.client_name)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.client_name)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.phone_number)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.phone_number)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.join_time)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.join_time)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.client_manager)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.client_manager)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.identify_number }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

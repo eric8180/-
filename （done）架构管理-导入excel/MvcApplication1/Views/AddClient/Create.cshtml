@@ -1,0 +1,66 @@
+﻿@model MVCDemo.Models.Client
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Client</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.client_name)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.client_name)
+            @Html.ValidationMessageFor(model => model.client_name)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.identify_number)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.identify_number)
+            @Html.ValidationMessageFor(model => model.identify_number)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.phone_number)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.phone_number)
+            @Html.ValidationMessageFor(model => model.phone_number)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.join_time)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.join_time)
+            @Html.ValidationMessageFor(model => model.join_time)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.client_manager)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.client_manager)
+            @Html.ValidationMessageFor(model => model.client_manager)
+        </div>
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

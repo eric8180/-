@@ -1,0 +1,122 @@
+﻿@{
+    ViewBag.Title = "dyz";
+}
+
+<h2>dyz</h2>
+@{
+    ViewBag.Title = "购买确认";
+    IEnumerable<IGrouping<string, SSSDYFW_Projects.Models.Canteen.Chinese>> bm = Model as IEnumerable<IGrouping<string, SSSDYFW_Projects.Models.Canteen.Chinese>>;
+    DateTime[] dts = ViewBag.Times as DateTime[];
+}
+@using Common.Class;
+<div data-role="page" id="PagePurchaseConfirmation">
+    <div data-role="popup" id="myPopup1" class="ui-content" data-overlay-theme="b">
+        <p id="pagepcmsg"></p>
+    </div>
+    <a href="#myPopup1" id="pagepca" style="display:none" data-rel="popup" data-transition="slidedown" class="ui-btn ui-btn-inline ui-corner-all" data-position-to="window">弹窗窗口显示</a>
+    <script>
+        function popupalert(s){
+            $('#PagePurchaseConfirmation #pagepcmsg').text(s);
+            $('#PagePurchaseConfirmation #pagepca').click();
+        }
+        $(function () {
+            ccc1();
+        });
+        function ccc1() {
+            //if ($.trim($('#Bumen').val()) == '') {
+            //    return;
+            //}
+            $('#selectdate').val($('#STime').val());
+            $.post('#', $('#fffz').serialize(), function (Data) {
+                if (Data.Success) {
+                    var tts = '';
+                    var count = 0;
+                    $('#divtable6').html(tts);
+                    if (Data.Data.length != 0) {
+                        $(Data.Data).each(function () {
+                            if (this.S) {
+                                tts += '<div style="float:left;width:25%;"><label class="ui-mini ui-state-disabled" style="border-bottom-width:1px;" for="axx' + this.Value + '">' + this.Text + '</label><input class="ui-mini ui-state-disabled" style="display:none" type="checkbox" id="axx' + this.Value + '" value="0" checked="checked" /></div>';
+                            } else {
+                                count++;
+                                tts += '<div style="float:left;width:25%"><label class="ui-mini" style="border-bottom-width:1px;" for="axx' + this.Value + '">' + this.Text + '</label><input class="ui-mini" type="checkbox" name="UserNos" id="axx' + this.Value + '" value="' + this.Value + '" /></div>';
+                            }
+                        });
+                        $('#divtable6').append(tts);
+                        $('#divtable6').trigger('create');
+                        if (count > 0) {
+                            $('#sssubbtn').removeClass('ui-state-disabled');
+                        }
+                    } else {
+                        popupalert("没有任何记录！");
+                        //alert("没有任何记录！");
+                    }
+                } else {
+                    alert("查询失败！" + Data.Data);
+                }
+            });
+        }
+        function SBtn() {
+            $('#sssubbtn').addClass('ui-state-disabled');
+            $.post('PurchaseConfirmation2', $('#fffz2').serialize(), function (Data) {
+                if (Data.Success) {
+                    ccc1();
+                    alert('确认成功！');
+                } else {
+                    alert("确认失败！" + Data.Data);
+                }
+            });
+            return false;
+        }
+    </script>
+    <div data-role="main" class="ui-content">
+        <form method="post" id="fffz" action="#">
+            <label for="STime">请选择日期</label>
+            <select name="STime" id="STime" onchange="ccc1()">
+                @if (dts != null)
+                {
+                    bool temp = true;
+                    foreach (var item in dts)
+                    {
+                        <option value="@item.ToString(Date.DateString)" @(temp ? " selected=selected " : string.Empty)>@item.ToString(Date.MonthString)</option>
+                        temp = false;
+                    }
+                }
+            </select>
+            <label for="Bumen">请选择部门</label>
+            <select name="Bumen" id="Bumen" onchange="ccc1()">
+                <option value="">全部</option>
+                @if (bm != null)
+                {
+                    foreach (var item in bm)
+                    {
+                        <optgroup label="@item.Key">
+                            @foreach (var itemitem in item)
+                            {
+                                <option value="@itemitem.Value">@itemitem.Value</option>
+                            }
+                        </optgroup>
+                    }
+                }
+            </select>
+        </form>
+
+        <form method="post" id="fffz2" action="#">
+            <input type="hidden" name="Time" id="selectdate" value="@dts[0].ToString(Date.DateString)" />
+            <fieldset data-role="controlgroup" class="ui-mini ui-controlgroup ui-controlgroup-vertical ui-corner-all">
+                <legend>选择人员:</legend>
+                <div id="divtable6">
+                    @*<div style="float:left;width:25%;display:none">
+                            <label class="ui-mini ui-state-disabled" style="border-bottom-width:1px;" for="a0222">姓名</label>
+                            <input class="ui-mini ui-state-disabled" style="display:none" type="checkbox" name="UserNos" id="a0222" value="123" checked="checked" />
+                        </div>*@
+                </div>
+            </fieldset>
+        </form>
+        <div style="margin-top:14px">
+            <a href="#" onclick="return SBtn()" class="ui-state-disabled ui-btn" id="sssubbtn">确认购买</a>
+        </div>
+    </div>
+</div>
+<div>
+    @Html.ActionLink("未购买", "")
+</div>

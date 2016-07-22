@@ -1,0 +1,114 @@
+﻿@model MVCDemo.Models.ZC
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript">
+    $(function () {
+        $("#branch_no").change(function () { //ORG3选项改变时激活
+            var selec = $(this).val(); //获取改变的选项值
+            var url = "@Url.Action("GetBZ", "Company")"; //参数依次类型(action,Controller,area）
+
+            $("#zyh_name").find("option").remove(); //清空
+
+            $.getJSON(url, { 'branch_no': selec }, function (data) { //area是参数名和Controllers中的action参数名相同
+                if (data.Success) {
+                    $.each(data.Data, function (i, item) {
+                        $("<option></option>").val(item["bname"]).text(item["bname"]).appendTo($("#zyh_name"));
+                    });
+                } else {
+                    alert('error' + data.Data);
+                }
+            });
+        });
+    });
+</script>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>编辑职场信息</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.seq)
+
+        @{
+    List<SelectListItem> lst = new List<SelectListItem>();
+
+    foreach (var md in ViewBag.hnarae)
+    {
+        lst.Add(new SelectListItem { Text = md.name, Value = md.branch });
+
+    }
+    
+
+        }
+        <div class="form-group">
+            @Html.LabelFor(model => model.branch_no, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.branch_no, lst, "----请选择----", htmlAttributes: new { @class = " btn btn-default dropdown-toggle" })
+                @Html.ValidationMessageFor(model => model.branch_no, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.zyh_name, htmlAttributes: new { @class = " control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.zyh_name, new SelectListItem[] { new SelectListItem() { Text = ViewBag.cname, Value = ViewBag.cname } }, htmlAttributes: new { @class = " btn btn-default dropdown-toggle " })
+                @Html.ValidationMessageFor(model => model.zyh_name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.zcname, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.zcname, new { htmlAttributes = new { @class = " form-control" } })
+                @Html.ValidationMessageFor(model => model.zcname, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.zc_no, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.zc_no, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.zc_no, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.sys, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.sys
+           , new SelectListItem[] { new SelectListItem { Text = "AMIS", Value = "AMIS" }, new SelectListItem { Text = "SZ", Value = "SZ" } }
+           , htmlAttributes: new { @class = "btn btn-default dropdown-toggle" })
+                @Html.ValidationMessageFor(model => model.sys, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="保存" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("返回列表", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "Upload files";
+}
+@*
+<td>
+    2、@using (@Html.BeginForm("ImportStu", "ProSchool", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <input name="file" type="file" id="file" value="请选择文件" />
+        <br/>
+        <input type="submit" name="Upload" value="批量导入客户信息" id="upload" />
+    }
+</td>
+*@
+
+<form id="form" name="form" enctype="multipart/form-data" method="post" action="/AddClient/Upload">
+    <input type="file" name="fileName" />
+    <input name="upload" type="submit" value="导  入" class="bt_bg"/>
+</form>
